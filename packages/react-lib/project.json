@@ -1,0 +1,11 @@
+{
+  "name": "@bhouston/react-lib",
+  "root": "packages/react-lib",
+  "targets": {
+    "build": {},
+    "watch": {},
+    "lint:check": {},
+    "lint": {},
+    "format": {}
+  }
+}

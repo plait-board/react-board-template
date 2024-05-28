@@ -1,0 +1,16 @@
+{
+  "name": "koa-server",
+  "root": "apps/koa-server",
+  "targets": {
+    "watch": {
+      "options": {
+        "commands": ["tsc --watch", "nodemon dist/server.js"]
+      }
+    },
+    "build": {},
+    "lint:check": {},
+    "lint": {},
+    "format": {},
+    "test": {}
+  }
+}

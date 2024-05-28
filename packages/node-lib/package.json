@@ -1,0 +1,11 @@
+{
+  "name": "@bhouston/node-lib",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "source": "src/index.ts",
+  "devDependencies": {
+    "zod": "^3.22.4"
+  }
+}

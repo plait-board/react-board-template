@@ -1,0 +1,36 @@
+{
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "markdown",
+    "html",
+    "json"
+  ],
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "cSpell.words": [
+    "bhouston",
+    "Buildx",
+    "bunx",
+    "cacheable",
+    "esbuild",
+    "fortawesome",
+    "gcloud",
+    "GLTF",
+    "healthcheck",
+    "interruptible",
+    "lerp",
+    "microbundle",
+    "Nullary",
+    "reactflow",
+    "reserialization",
+    "reserialized",
+    "Slerp",
+    "tailwindcss",
+    "threeify"
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": ["source.formatDocument", "source.fixAll.eslint"]
+}
