@@ -1,4 +1,5 @@
-import { HelloWorld } from '@bhouston/react-lib';
+import { HelloWorld, Board } from '@bhouston/react-lib';
+import type { PlaitBoardOptions, PlaitElement, PlaitPlugin } from '@plait/core';
 import React, { useMemo, useState } from 'react';
 
 const Home: React.FC = () => {
@@ -12,12 +13,11 @@ const Home: React.FC = () => {
     });
   }, []);
 
-  return (
-    <div className="text-center mt-4">
-      <HelloWorld name={serverMessage ?? ''} />
-      <img src="/static/React-icon.svg" alt="React Logo" />{' '}
-    </div>
-  );
+  const value: PlaitElement[] = [];
+  const plugins: PlaitPlugin[] = [];
+  const options: PlaitBoardOptions = {};
+
+  return <Board value={value} options={options} plugins={plugins}></Board>;
 };
 
 export default Home;

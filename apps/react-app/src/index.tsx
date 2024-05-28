@@ -3,8 +3,12 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import ErrorPage from './ErrorPage.js';
-import Home from './Home.js';
 import Viewer from './Viewer.js';
+import Home from './Home.js';
+
+// import '@plait/core/styles/styles.scss';
+
+import './app.scss';
 
 const container = document.querySelector('#root');
 const root = createRoot(container!);

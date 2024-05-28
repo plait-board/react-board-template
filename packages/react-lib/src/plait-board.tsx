@@ -49,23 +49,24 @@ import {
   withViewport,
   PlaitBoard,
   type PlaitPlugin,
-  type PlaitBoardOptions
+  type PlaitBoardOptions,
+  type PlaitChildrenContext
 } from '@plait/core';
 import type { BoardChangeData } from './interfaces/board';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import React from 'react';
 
 export type BoardProps = {
   value: PlaitElement[];
   options: PlaitBoardOptions;
   plugins: PlaitPlugin[];
-  plaitViewport: Viewport;
+  viewport?: Viewport;
   onChange?: (data: BoardChangeData) => void;
   style?: React.CSSProperties;
-  readOnly?: boolean;
-  initializeCompleted?: (board: PlaitBoard) => void;
+  afterInitialize?: (board: PlaitBoard) => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export const board = (props: BoardProps) => {
+export const Board: React.FC<BoardProps> = (props: BoardProps) => {
   const hostRef = useRef<SVGSVGElement>(null);
   const elementLowerHostRef = useRef<SVGGElement>(null);
   const elementHostRef = useRef<SVGGElement>(null);
@@ -73,8 +74,12 @@ export const board = (props: BoardProps) => {
   const elementActiveHostRef = useRef<SVGGElement>(null);
   const viewportContainerRef = useRef<HTMLDivElement>(null);
   const boardContainerRef = useRef<HTMLDivElement>(null);
+
+  const [board, setBoard] = useState<PlaitBoard>({} as PlaitBoard);
+  let listRender: ListRender;
+
   useEffect(() => {
-    const board = initializeBoard(props.value, props.options, props.plugins);
+    let board = initializeBoard(props.value, props.options, props.plugins);
     const roughSVG = rough.svg(hostRef.current!, {
       options: { roughness: 0, strokeWidth: 1 }
     });
@@ -90,7 +95,7 @@ export const board = (props: BoardProps) => {
       viewportContainer: viewportContainerRef.current!
     });
     BOARD_TO_ON_CHANGE.set(board, () => {
-      // updateListRender();
+      listRender.update(board.children, initializeChildrenContext(board));
     });
     BOARD_TO_AFTER_CHANGE.set(board, () => {
       const changeEvent: BoardChangeData = {
@@ -103,7 +108,28 @@ export const board = (props: BoardProps) => {
       // this.plaitChange.emit(changeEvent);
     });
     const context = new PlaitBoardContext();
-    BOARD_TO_CONTEXT.set(board as any, context);
+    BOARD_TO_CONTEXT.set(board, context);
+    setBoard(board);
+
+    initializeViewportContainer(board);
+    initializeViewBox(board);
+    initializeViewportOffset(board);
+
+    if (props.afterInitialize) {
+      props.afterInitialize(board);
+    }
+
+    listRender = initializeListRender(board);
+
+    return () => {
+      BOARD_TO_CONTEXT.delete(board);
+      BOARD_TO_AFTER_CHANGE.delete(board);
+      BOARD_TO_ON_CHANGE.delete(board);
+      BOARD_TO_ELEMENT_HOST.delete(board);
+      IS_BOARD_ALIVE.delete(board);
+      BOARD_TO_HOST.delete(board);
+      BOARD_TO_ROUGH_SVG.delete(board);
+    };
   }, []);
 
   return (
@@ -128,6 +154,20 @@ export const board = (props: BoardProps) => {
       </div>
     </div>
   );
+};
+
+const initializeListRender = (board: PlaitBoard) => {
+  const listRender = new ListRender(board);
+  listRender.initialize(board.children, initializeChildrenContext(board));
+  return listRender;
+};
+
+const initializeChildrenContext = (board: PlaitBoard): PlaitChildrenContext => {
+  return {
+    board: board,
+    parent: board,
+    parentG: PlaitBoard.getElementHost(board)
+  };
 };
 
 const initializeBoard = (value: any, options: any, plugins: any) => {

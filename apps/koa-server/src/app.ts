@@ -42,6 +42,8 @@ export const getApp = (appProps: AppProps) => {
   app.use(router.routes());
   app.use(router.allowedMethods());
 
+  console.log('xxxxxx');
+
   const nodeEnv = config.NODE_ENV.toLowerCase();
   if (appProps.logging) console.log(`   Mode: ${nodeEnv}`);
 
