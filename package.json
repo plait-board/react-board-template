@@ -57,6 +57,7 @@
     "@google-cloud/storage": "^7.10.1",
     "@plait/common": "file:../x-plait/dist/common",
     "@plait/core": "file:../x-plait/dist/core",
+    "ahooks": "^3.8.0",
     "immer": "^10.0.3",
     "is-hotkey": "^0.2.0",
     "p-all": "^5.0.0",

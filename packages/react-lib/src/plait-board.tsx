@@ -55,6 +55,7 @@ import {
 import type { BoardChangeData } from './interfaces/board';
 import { useRef, useEffect, useState } from 'react';
 import React from 'react';
+import useBoardEvent from './hooks/use-board-event';
 
 export type BoardProps = {
   value: PlaitElement[];
@@ -131,6 +132,8 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
       BOARD_TO_ROUGH_SVG.delete(board);
     };
   }, []);
+
+  useBoardEvent({ board, hostRef });
 
   return (
     <div className="plait-board plait-board-container" ref={boardContainerRef}>
