@@ -56,6 +56,7 @@ import type { BoardChangeData } from './interfaces/board';
 import { useRef, useEffect, useState } from 'react';
 import React from 'react';
 import useBoardEvent from './hooks/use-board-event';
+import { withReact } from './plugins/with-react';
 
 export type BoardProps = {
   value: PlaitElement[];
@@ -84,7 +85,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     const roughSVG = rough.svg(hostRef.current!, {
       options: { roughness: 0, strokeWidth: 1 }
     });
-    BOARD_TO_ROUGH_SVG.set(board, roughSVG as any);
+    BOARD_TO_ROUGH_SVG.set(board, roughSVG);
     BOARD_TO_HOST.set(board, hostRef.current!);
     IS_BOARD_ALIVE.set(board, true);
     BOARD_TO_ELEMENT_HOST.set(board, {
@@ -121,6 +122,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     }
 
     listRender = initializeListRender(board);
+    console.log('list render');
 
     return () => {
       BOARD_TO_CONTEXT.delete(board);
@@ -180,7 +182,11 @@ const initializeBoard = (value: any, options: any, plugins: any) => {
         withHistory(
           withSelection(
             withMoving(
-              withBoard(withViewport(withOptions(createBoard(value, options))))
+              withBoard(
+                withViewport(
+                  withOptions(withReact(createBoard(value, options)))
+                )
+              )
             )
           )
         )
