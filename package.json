@@ -55,8 +55,9 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^7.10.1",
-    "@plait/common": "file:../x-plait/dist/common",
-    "@plait/core": "file:../x-plait/dist/core",
+    "@plait/common": "0.59.0",
+    "@plait/core": "0.59.0",
+    "@plait/draw": "0.59.0",
     "ahooks": "^3.8.0",
     "immer": "^10.0.3",
     "is-hotkey": "^0.2.0",
@@ -64,6 +65,7 @@
     "roughjs": "^4.5.2",
     "rxjs": "~7.8.0",
     "slate": "^0.101.5",
+    "slate-react": "^0.104.0",
     "source-map-support": "^0.5.21"
   },
   "engines": {

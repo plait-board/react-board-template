@@ -56,6 +56,8 @@ import type { BoardChangeData } from './interfaces/board';
 import { useRef, useEffect, useState } from 'react';
 import React from 'react';
 import useBoardEvent from './hooks/use-board-event';
+import { withReact } from './plugins/with-react';
+import { withText } from '@plait/common';
 
 export type BoardProps = {
   value: PlaitElement[];
@@ -68,6 +70,7 @@ export type BoardProps = {
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const Board: React.FC<BoardProps> = (props: BoardProps) => {
+  let initialized = false;
   const hostRef = useRef<SVGSVGElement>(null);
   const elementLowerHostRef = useRef<SVGGElement>(null);
   const elementHostRef = useRef<SVGGElement>(null);
@@ -84,7 +87,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     const roughSVG = rough.svg(hostRef.current!, {
       options: { roughness: 0, strokeWidth: 1 }
     });
-    BOARD_TO_ROUGH_SVG.set(board, roughSVG as any);
+    BOARD_TO_ROUGH_SVG.set(board, roughSVG);
     BOARD_TO_HOST.set(board, hostRef.current!);
     IS_BOARD_ALIVE.set(board, true);
     BOARD_TO_ELEMENT_HOST.set(board, {
@@ -116,11 +119,13 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     initializeViewBox(board);
     initializeViewportOffset(board);
 
-    if (props.afterInitialize) {
+    if (props.afterInitialize && !initialized) {
       props.afterInitialize(board);
     }
 
     listRender = initializeListRender(board);
+
+    initialized = true;
 
     return () => {
       BOARD_TO_CONTEXT.delete(board);
@@ -130,6 +135,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
       IS_BOARD_ALIVE.delete(board);
       BOARD_TO_HOST.delete(board);
       BOARD_TO_ROUGH_SVG.delete(board);
+      listRender.destroy();
     };
   }, []);
 
@@ -180,7 +186,11 @@ const initializeBoard = (value: any, options: any, plugins: any) => {
         withHistory(
           withSelection(
             withMoving(
-              withBoard(withViewport(withOptions(createBoard(value, options))))
+              withBoard(
+                withViewport(
+                  withOptions(withReact(withText(createBoard(value, options))))
+                )
+              )
             )
           )
         )
