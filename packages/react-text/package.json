@@ -1,5 +1,5 @@
 {
-  "name": "@bhouston/react-lib",
+  "name": "@plait/react-text",
   "version": "1.0.0",
   "type": "module",
   "types": "dist/index.d.ts",

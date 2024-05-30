@@ -1,0 +1,11 @@
+{
+  "name": "@plait/react-text",
+  "root": "packages/react-text",
+  "targets": {
+    "build": {},
+    "watch": {},
+    "lint:check": {},
+    "lint": {},
+    "format": {}
+  }
+}

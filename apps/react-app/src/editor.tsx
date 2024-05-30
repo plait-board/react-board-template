@@ -1,10 +1,10 @@
-import { HelloWorld, Board } from '@bhouston/react-lib';
+import { Board } from '@plait/react-board';
 import type { PlaitBoardOptions, PlaitElement, PlaitPlugin } from '@plait/core';
 import React, { useMemo, useState } from 'react';
 import { withGroup } from '@plait/common';
 import { withDraw } from '@plait/draw';
 
-const Home: React.FC = () => {
+const Editor: React.FC = () => {
   const [serverMessage, setServerMessage] = useState<string>();
 
   useMemo(() => {
@@ -44,4 +44,4 @@ const Home: React.FC = () => {
   return <Board value={value} options={options} plugins={plugins}></Board>;
 };
 
-export default Home;
+export default Editor;

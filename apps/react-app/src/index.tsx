@@ -3,8 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import ErrorPage from './ErrorPage.js';
-import Viewer from './Viewer.js';
-import Home from './Home.js';
+import Editor from './editor.js';
 
 // import '@plait/core/styles/styles.scss';
 
@@ -16,8 +15,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/viewer" element={<Viewer />} />
+        <Route path="/" element={<Editor />} />
         <Route
           path="*"
           element={<ErrorPage errorCode={404} errorMessage="Page Not Found" />}

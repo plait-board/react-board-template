@@ -1,6 +1,6 @@
 {
-  "name": "@bhouston/react-lib",
-  "root": "packages/react-lib",
+  "name": "@plait/react-board",
+  "root": "packages/react-board",
   "targets": {
     "build": {},
     "watch": {},
