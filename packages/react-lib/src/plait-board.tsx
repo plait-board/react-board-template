@@ -57,6 +57,7 @@ import { useRef, useEffect, useState } from 'react';
 import React from 'react';
 import useBoardEvent from './hooks/use-board-event';
 import { withReact } from './plugins/with-react';
+import { withText } from '@plait/common';
 
 export type BoardProps = {
   value: PlaitElement[];
@@ -187,7 +188,7 @@ const initializeBoard = (value: any, options: any, plugins: any) => {
             withMoving(
               withBoard(
                 withViewport(
-                  withOptions(withReact(createBoard(value, options)))
+                  withOptions(withReact(withText(createBoard(value, options))))
                 )
               )
             )

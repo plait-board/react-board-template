@@ -2,7 +2,6 @@ import { HelloWorld, Board } from '@bhouston/react-lib';
 import type { PlaitBoardOptions, PlaitElement, PlaitPlugin } from '@plait/core';
 import React, { useMemo, useState } from 'react';
 import { withGroup } from '@plait/common';
-import { withCommon } from './plugins/with-common';
 import { withDraw } from '@plait/draw';
 
 const Home: React.FC = () => {
@@ -39,7 +38,7 @@ const Home: React.FC = () => {
       strokeWidth: 2
     }
   ] as PlaitElement[];
-  const plugins: PlaitPlugin[] = [withCommon, withDraw, withGroup];
+  const plugins: PlaitPlugin[] = [withDraw, withGroup];
   const options: PlaitBoardOptions = {};
 
   return <Board value={value} options={options} plugins={plugins}></Board>;

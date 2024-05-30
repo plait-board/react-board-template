@@ -36,6 +36,12 @@
         position: initial;
     }
 
+    .text {
+        foreignObject {
+            outline: none;
+        }
+    }
+
     .plait-toolbar {
         position: absolute;
         display: flex;
