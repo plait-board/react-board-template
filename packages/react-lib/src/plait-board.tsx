@@ -69,6 +69,7 @@ export type BoardProps = {
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const Board: React.FC<BoardProps> = (props: BoardProps) => {
+  let initialized = false;
   const hostRef = useRef<SVGSVGElement>(null);
   const elementLowerHostRef = useRef<SVGGElement>(null);
   const elementHostRef = useRef<SVGGElement>(null);
@@ -117,12 +118,13 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     initializeViewBox(board);
     initializeViewportOffset(board);
 
-    if (props.afterInitialize) {
+    if (props.afterInitialize && !initialized) {
       props.afterInitialize(board);
     }
 
     listRender = initializeListRender(board);
-    console.log('list render');
+
+    initialized = true;
 
     return () => {
       BOARD_TO_CONTEXT.delete(board);
@@ -132,6 +134,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
       IS_BOARD_ALIVE.delete(board);
       BOARD_TO_HOST.delete(board);
       BOARD_TO_ROUGH_SVG.delete(board);
+      listRender.destroy();
     };
   }, []);
 
