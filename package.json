@@ -66,6 +66,7 @@
     "rxjs": "~7.8.0",
     "slate": "^0.101.5",
     "slate-react": "^0.104.0",
+    "slate-history": "^0.100.0",
     "source-map-support": "^0.5.21"
   },
   "engines": {

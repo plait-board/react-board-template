@@ -16,7 +16,10 @@ export const withReact = (board: PlaitBoard & PlaitTextBoard) => {
       destroy: () => {
         root.unmount();
       },
-      update: (props: Partial<TextProps>) => {}
+      update: (updatedProps: Partial<TextProps>) => {
+        const newProps = { ...props, ...updatedProps };
+        root.render(<Text {...newProps}></Text>);
+      }
     };
     return ref;
   };
