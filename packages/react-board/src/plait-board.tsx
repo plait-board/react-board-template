@@ -80,7 +80,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
   const boardContainerRef = useRef<HTMLDivElement>(null);
 
   const [board, setBoard] = useState<PlaitBoard>({} as PlaitBoard);
-  let listRender: ListRender;
 
   useEffect(() => {
     let board = initializeBoard(props.value, props.options, props.plugins);
@@ -98,6 +97,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
       container: boardContainerRef.current!,
       viewportContainer: viewportContainerRef.current!
     });
+    const listRender = initializeListRender(board);
     BOARD_TO_ON_CHANGE.set(board, () => {
       listRender.update(board.children, initializeChildrenContext(board));
     });
@@ -122,8 +122,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     if (props.afterInitialize && !initialized) {
       props.afterInitialize(board);
     }
-
-    listRender = initializeListRender(board);
 
     initialized = true;
 

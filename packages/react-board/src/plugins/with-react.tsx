@@ -1,8 +1,6 @@
-import type { PlaitTextBoard, TextProps } from '@plait/common';
+import { type PlaitTextBoard, type TextProps } from '@plait/common';
 import type { ComponentRef, PlaitBoard } from '@plait/core';
 import { createRoot } from 'react-dom/client';
-import { createEditor } from 'slate';
-import { Editable, Slate, withReact as withReactForSlate } from 'slate-react';
 import { Text } from '@plait/react-text';
 
 export const withReact = (board: PlaitBoard & PlaitTextBoard) => {
@@ -12,12 +10,13 @@ export const withReact = (board: PlaitBoard & PlaitTextBoard) => {
   ) => {
     const root = createRoot(container);
     root.render(<Text {...props}></Text>);
+    let newProps = { ...props };
     const ref: ComponentRef<TextProps> = {
       destroy: () => {
         root.unmount();
       },
       update: (updatedProps: Partial<TextProps>) => {
-        const newProps = { ...props, ...updatedProps };
+        newProps = { ...newProps, ...updatedProps };
         root.render(<Text {...newProps}></Text>);
       }
     };

@@ -5,16 +5,6 @@ import { withGroup } from '@plait/common';
 import { withDraw } from '@plait/draw';
 
 const Editor: React.FC = () => {
-  const [serverMessage, setServerMessage] = useState<string>();
-
-  useMemo(() => {
-    fetch('/api/message').then(async (res) => {
-      const json = await res.json();
-      console.log(json);
-      return setServerMessage(json.message);
-    });
-  }, []);
-
   const value = [
     {
       id: 'GMKAE',
