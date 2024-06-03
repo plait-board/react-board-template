@@ -7,7 +7,8 @@ import Editor from './editor.js';
 
 // import '@plait/core/styles/styles.scss';
 
-import './app.scss';
+import './styles/core/styles.scss';
+import './styles/text/index.scss';
 
 const container = document.querySelector('#root');
 const root = createRoot(container!);

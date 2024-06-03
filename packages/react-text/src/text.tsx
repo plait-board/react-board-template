@@ -1,4 +1,10 @@
-import { createEditor, type Descendant, type Element } from 'slate';
+import {
+  Editor,
+  Operation,
+  createEditor,
+  type Descendant,
+  type Element
+} from 'slate';
 import { Editable, Slate, withReact, ReactEditor } from 'slate-react';
 import type { TextData, TextProps } from '@plait/common';
 import { useMemo, useCallback } from 'react';
@@ -29,6 +35,11 @@ export const Text: React.FC<TextComponentProps> = (
       editor={editor}
       initialValue={initialValue}
       onChange={(value: Descendant[]) => {
+        if (
+          editor.operations.every((op) => Operation.isSelectionOperation(op))
+        ) {
+          return;
+        }
         const size = getSize(editor);
         const data: TextData = {
           ...size,
@@ -38,7 +49,7 @@ export const Text: React.FC<TextComponentProps> = (
       }}
     >
       <Editable
-        className="slate-editable-container"
+        className="slate-editable-container plait-text-container"
         renderElement={renderElement}
         readOnly={readonly === undefined ? true : readonly}
         onKeyDown={(event) => {
