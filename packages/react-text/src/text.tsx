@@ -1,51 +1,36 @@
-import {
-  Editor,
-  Operation,
-  createEditor,
-  type Descendant,
-  type Element
-} from 'slate';
-import { Editable, Slate, withReact, ReactEditor } from 'slate-react';
-import type { TextData, TextProps } from '@plait/common';
+import { createEditor, type Descendant, type Element } from 'slate';
+import { Editable, Slate, withReact } from 'slate-react';
+import type { TextProps } from '@plait/common';
 import { useMemo, useCallback } from 'react';
 import { withHistory } from 'slate-history';
-import { measureDiv } from '@plait/common';
 
 export type TextComponentProps = TextProps;
 
 export const Text: React.FC<TextComponentProps> = (
   props: TextComponentProps
 ) => {
-  const {
-    text,
-    readonly,
-    onChange,
-    onComposition,
-    onExitEdit,
-    registerGetSize
-  } = props;
+  const { text, readonly, onChange, onComposition, onExitEdit, afterInit } =
+    props;
   const renderElement = useCallback(
     (props: any) => <ParagraphElement {...props} />,
     []
   );
   const initialValue: Descendant[] = [text];
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const editor = useMemo(() => {
+    const editor = withHistory(withReact(createEditor()));
+    afterInit && afterInit(editor);
+    return editor;
+  }, []);
   return (
     <Slate
       editor={editor}
       initialValue={initialValue}
       onChange={(value: Descendant[]) => {
-        if (
-          editor.operations.every((op) => Operation.isSelectionOperation(op))
-        ) {
-          return;
-        }
-        const size = getSize(editor);
-        const data: TextData = {
-          ...size,
-          newText: value[0] as Element
-        } as TextData;
-        onChange && onChange(data);
+        onChange &&
+          onChange({
+            newText: editor.children[0] as Element,
+            operations: editor.operations
+          });
       }}
     >
       <Editable
@@ -78,16 +63,4 @@ const ParagraphElement = (props: {
       {children}
     </div>
   );
-};
-
-export const getSize = (editor: ReactEditor) => {
-  // TODO rotate
-  // const transformMatrix = this.g.getAttribute('transform');
-  // this.g.setAttribute('transform', '');
-  const paragraph = ReactEditor.toDOMNode(editor, editor.children[0]);
-  const { width, height } = measureDiv(paragraph);
-  // if (transformMatrix) {
-  //     this.g.setAttribute('transform', transformMatrix);
-  // }
-  return { width, height };
 };

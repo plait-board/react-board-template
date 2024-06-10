@@ -52,7 +52,7 @@ import {
   type PlaitBoardOptions,
   type PlaitChildrenContext
 } from '@plait/core';
-import type { BoardChangeData } from './interfaces/board';
+import type { BoardChangeData } from './plugins/board';
 import { useRef, useEffect, useState } from 'react';
 import React from 'react';
 import useBoardEvent from './hooks/use-board-event';
@@ -102,14 +102,14 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
       listRender.update(board.children, initializeChildrenContext(board));
     });
     BOARD_TO_AFTER_CHANGE.set(board, () => {
-      const changeEvent: BoardChangeData = {
+      const data: BoardChangeData = {
         children: board.children,
         operations: board.operations,
         viewport: board.viewport,
         selection: board.selection,
         theme: board.theme
       };
-      // this.plaitChange.emit(changeEvent);
+      props.onChange && props.onChange(data);
     });
     const context = new PlaitBoardContext();
     BOARD_TO_CONTEXT.set(board, context);

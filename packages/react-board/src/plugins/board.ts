@@ -1,3 +1,4 @@
+import type { RenderComponentRef } from '@plait/common';
 import {
   PlaitElement,
   PlaitOperation,
@@ -5,6 +6,14 @@ import {
   Selection,
   type PlaitTheme
 } from '@plait/core';
+
+export interface ReactBoard {
+  renderComponent: <T extends object>(
+    children: React.ReactNode,
+    container: Element | DocumentFragment,
+    props: T
+  ) => RenderComponentRef<T>;
+}
 
 export interface BoardChangeData {
   children: PlaitElement[];

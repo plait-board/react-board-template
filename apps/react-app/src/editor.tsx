@@ -1,37 +1,34 @@
-import { Board } from '@plait/react-board';
+import { Board, type BoardChangeData } from '@plait/react-board';
 import type { PlaitBoardOptions, PlaitElement, PlaitPlugin } from '@plait/core';
 import React, { useMemo, useState } from 'react';
 import { withGroup } from '@plait/common';
 import { withDraw } from '@plait/draw';
+import { withMind } from '@plait/mind';
+import { withMindExtend } from './plugins/with-mind-extend';
+import { withCommonPlugin } from './plugins/with-common';
+import { mockData } from './mock-data';
 
 const Editor: React.FC = () => {
-  const value = [
-    {
-      id: 'GMKAE',
-      type: 'geometry',
-      shape: 'terminal',
-      angle: 0,
-      opacity: 1,
-      textHeight: 20,
-      text: {
-        children: [
-          {
-            text: '结束'
-          }
-        ],
-        align: 'center'
-      },
-      points: [
-        [-107, 443.9999999999999],
-        [13, 503.9999999999999]
-      ],
-      strokeWidth: 2
-    }
-  ] as PlaitElement[];
-  const plugins: PlaitPlugin[] = [withDraw, withGroup];
+  const value = mockData;
+  const plugins: PlaitPlugin[] = [
+    withDraw,
+    withGroup,
+    withMind,
+    withMindExtend,
+    withCommonPlugin
+  ];
   const options: PlaitBoardOptions = {};
 
-  return <Board value={value} options={options} plugins={plugins}></Board>;
+  return (
+    <Board
+      value={value}
+      options={options}
+      plugins={plugins}
+      onChange={(data: BoardChangeData) => {
+        console.log(data);
+      }}
+    ></Board>
+  );
 };
 
 export default Editor;
