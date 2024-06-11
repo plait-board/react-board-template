@@ -19,7 +19,9 @@ export const withCommonPlugin = (board: PlaitBoard) => {
     let newProps = { ...props };
     const ref: RenderComponentRef<ImageProps> = {
       destroy: () => {
-        root.unmount();
+        setTimeout(() => {
+          root.unmount();
+        }, 0);
       },
       update: (updatedProps: Partial<ImageProps>) => {
         newProps = { ...newProps, ...updatedProps };

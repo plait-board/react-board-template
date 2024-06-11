@@ -6,7 +6,9 @@
     height: 100%;
     position: relative;
     overflow: hidden;
-
+    foreignObject {
+        outline: none;
+    }
     // safari can not set this style, it will prevent text being from selected in edit mode
     // resolve the issue text being selected when user drag and move on board in firefox
     &.firefox {

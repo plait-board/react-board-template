@@ -9,6 +9,7 @@ import Editor from './editor.js';
 
 import './styles/core/styles.scss';
 import './styles/text/index.scss';
+import './../../../node_modules/@plait/mind/styles/styles.scss';
 
 const container = document.querySelector('#root');
 const root = createRoot(container!);

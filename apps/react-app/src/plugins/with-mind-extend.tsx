@@ -26,12 +26,16 @@ export const withMindExtend = (board: PlaitBoard) => {
     container: Element | DocumentFragment,
     props: EmojiProps
   ) => {
-    const root = createRoot(container);
+    const emojiContainer = document.createElement('span');
+    container.appendChild(emojiContainer);
+    const root = createRoot(emojiContainer);
     root.render(<Emoji {...props}></Emoji>);
     let newProps = { ...props };
     const ref: RenderComponentRef<EmojiProps> = {
       destroy: () => {
-        root.unmount();
+        setTimeout(() => {
+          root.unmount();
+        }, 0);
       },
       update: (updatedProps: Partial<EmojiProps>) => {
         newProps = { ...newProps, ...updatedProps };
