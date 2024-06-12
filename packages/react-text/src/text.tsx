@@ -9,8 +9,7 @@ export type TextComponentProps = TextProps;
 export const Text: React.FC<TextComponentProps> = (
   props: TextComponentProps
 ) => {
-  const { text, readonly, onChange, onComposition, onExitEdit, afterInit } =
-    props;
+  const { text, readonly, onChange, onComposition, afterInit } = props;
   const renderElement = useCallback(
     (props: any) => <ParagraphElement {...props} />,
     []
