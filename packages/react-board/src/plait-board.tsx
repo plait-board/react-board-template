@@ -55,9 +55,10 @@ import {
 import type { BoardChangeData } from './plugins/board';
 import { useRef, useEffect, useState } from 'react';
 import React from 'react';
+import useBoardPluginEvent from './hooks/use-plugin-event';
 import useBoardEvent from './hooks/use-board-event';
 import { withReact } from './plugins/with-react';
-import { withText } from '@plait/common';
+import { withImage, withText } from '@plait/common';
 
 export type BoardProps = {
   value: PlaitElement[];
@@ -148,6 +149,8 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     };
   }, []);
 
+  useBoardPluginEvent({ board, hostRef });
+
   useBoardEvent({ board, hostRef });
 
   return (
@@ -197,7 +200,9 @@ const initializeBoard = (value: any, options: any, plugins: any) => {
             withMoving(
               withBoard(
                 withViewport(
-                  withOptions(withReact(withText(createBoard(value, options))))
+                  withOptions(
+                    withReact(withImage(withText(createBoard(value, options))))
+                  )
                 )
               )
             )
