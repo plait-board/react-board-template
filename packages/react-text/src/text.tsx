@@ -45,6 +45,21 @@ export const Text: React.FC<TextComponentProps> = (
           //   }
           // }
         }}
+        onCompositionStart={(event) => {
+          if (onComposition) {
+            onComposition(event as unknown as CompositionEvent);
+          }
+        }}
+        onCompositionUpdate={(event) => {
+          if (onComposition) {
+            onComposition(event as unknown as CompositionEvent);
+          }
+        }}
+        onCompositionEnd={(event) => {
+          if (onComposition) {
+            onComposition(event as unknown as CompositionEvent);
+          }
+        }}
       />
     </Slate>
   );
