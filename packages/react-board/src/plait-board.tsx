@@ -81,6 +81,10 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
 
   const [board, setBoard] = useState<PlaitBoard>({} as PlaitBoard);
 
+  const [className, setClassName] = useState<string>(
+    `plait-board plait-board-container`
+  );
+
   useEffect(() => {
     let board = initializeBoard(props.value, props.options, props.plugins);
     const roughSVG = rough.svg(hostRef.current!, {
@@ -110,6 +114,9 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
         theme: board.theme
       };
       props.onChange && props.onChange(data);
+      setClassName(
+        `plait-board plait-board-container ${getBoardDynamicClassName(board)}`
+      );
     });
     const context = new PlaitBoardContext();
     BOARD_TO_CONTEXT.set(board, context);
@@ -124,6 +131,10 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     }
 
     initialized = true;
+
+    setClassName(
+      `plait-board plait-board-container ${getBoardDynamicClassName(board)}`
+    );
 
     return () => {
       BOARD_TO_CONTEXT.delete(board);
@@ -140,7 +151,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
   useBoardEvent({ board, hostRef });
 
   return (
-    <div className="plait-board plait-board-container" ref={boardContainerRef}>
+    <div className={className} ref={boardContainerRef}>
       <div
         className="viewport-container"
         ref={viewportContainerRef}
@@ -207,4 +218,32 @@ const initializeBoard = (value: any, options: any, plugins: any) => {
   //   this.board.theme = this.plaitTheme;
   // }
   return board;
+};
+
+const getBrowserClassName = () => {
+  if (IS_SAFARI) {
+    return 'safari';
+  }
+  if (IS_CHROME) {
+    return 'chrome';
+  }
+  if (IS_FIREFOX) {
+    return 'firefox';
+  }
+  return '';
+};
+
+const getBoardDynamicClassName = (board: PlaitBoard) => {
+  let result = `${getBrowserClassName()}`;
+  if (PlaitBoard.isFocus(board)) {
+    result += ` focused`;
+  }
+  if (board.options?.readonly) {
+    result += ` readonly`;
+  }
+  if (board.options?.disabledScrollOnNonFocus && !PlaitBoard.isFocus(board)) {
+    result += ` disabled-scroll`;
+  }
+  result += ` theme-${board.theme?.themeColorMode}`;
+  return result;
 };
