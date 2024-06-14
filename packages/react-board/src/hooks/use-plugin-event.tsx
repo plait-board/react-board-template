@@ -5,8 +5,6 @@ import {
   WritableClipboardOperationType,
   deleteFragment,
   getClipboardData,
-  getRectangleByElements,
-  getSelectedElements,
   hasInputOrTextareaTarget,
   setFragment,
   toHostPoint,
@@ -14,7 +12,7 @@ import {
 } from '@plait/core';
 import { useEventListener } from 'ahooks';
 
-const useBoardEvent = (props: {
+const useBoardPluginEvent = (props: {
   board: PlaitBoard;
   hostRef: React.RefObject<SVGSVGElement>;
 }) => {
@@ -185,4 +183,4 @@ const useBoardEvent = (props: {
   });
 };
 
-export default useBoardEvent;
+export default useBoardPluginEvent;
