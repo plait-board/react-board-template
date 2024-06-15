@@ -1,17 +1,11 @@
 import rough from 'roughjs/bin/rough';
-import { RoughSVG } from 'roughjs/bin/svg';
-import { fromEvent, Subject } from 'rxjs';
-import { filter, takeUntil, tap } from 'rxjs/operators';
 import {
   BOARD_TO_AFTER_CHANGE,
   BOARD_TO_CONTEXT,
   BOARD_TO_ELEMENT_HOST,
   BOARD_TO_HOST,
-  BOARD_TO_MOVING_POINT,
-  BOARD_TO_MOVING_POINT_IN_BOARD,
   BOARD_TO_ON_CHANGE,
   BOARD_TO_ROUGH_SVG,
-  BoardTransforms,
   HOST_CLASS_NAME,
   IS_BOARD_ALIVE,
   IS_CHROME,
@@ -21,23 +15,10 @@ import {
   PlaitBoardContext,
   PlaitElement,
   Viewport,
-  WritableClipboardOperationType,
-  ZOOM_STEP,
   createBoard,
-  deleteFragment,
-  getClipboardData,
-  hasInputOrTextareaTarget,
   initializeViewBox,
   initializeViewportContainer,
   initializeViewportOffset,
-  isFromViewportChange,
-  isPreventTouchMove,
-  setFragment,
-  setIsFromViewportChange,
-  toHostPoint,
-  toViewBoxPoint,
-  updateViewportByScrolling,
-  updateViewportOffset,
   withBoard,
   withHandPointer,
   withHistory,
@@ -220,9 +201,8 @@ const initializeBoard = (value: any, options: any, plugins: any) => {
 };
 
 const getBoardClassName = (board: PlaitBoard) => {
-  const defaultClassName = 'plait-board plait-board-container';
   return classNames(
-    defaultClassName,
+    HOST_CLASS_NAME,
     `${getBrowserClassName()}`,
     `theme-${board.theme?.themeColorMode}`,
     {
