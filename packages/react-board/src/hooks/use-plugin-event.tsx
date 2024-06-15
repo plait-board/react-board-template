@@ -12,12 +12,10 @@ import {
 } from '@plait/core';
 import { useEventListener } from 'ahooks';
 
-const useBoardPluginEvent = (props: {
-  board: PlaitBoard;
-  hostRef: React.RefObject<SVGSVGElement>;
-}) => {
-  const { board, hostRef } = props;
-
+const useBoardPluginEvent = (
+  board: PlaitBoard,
+  hostRef: React.RefObject<SVGSVGElement>
+) => {
   useEventListener(
     'mousedown',
     (event) => {
