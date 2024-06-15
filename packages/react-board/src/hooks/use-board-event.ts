@@ -12,21 +12,21 @@ import {
 import { useEffect } from 'react';
 import { useEventListener } from 'ahooks';
 
-const useBoardEvent = (props: {
-  board: PlaitBoard;
-  hostRef: React.RefObject<SVGSVGElement>;
-}) => {
+const useBoardEvent = (
+  board: PlaitBoard,
+  hostRef: React.RefObject<SVGSVGElement>
+) => {
   useEventListener(
     'scroll',
     (event) => {
-      if (isFromViewportChange(props.board)) {
-        setIsFromViewportChange(props.board, false);
+      if (isFromViewportChange(board)) {
+        setIsFromViewportChange(board, false);
       } else {
         const { scrollLeft, scrollTop } = event.target as HTMLElement;
-        updateViewportByScrolling(props.board, scrollLeft, scrollTop);
+        updateViewportByScrolling(board, scrollLeft, scrollTop);
       }
     },
-    { target: PlaitBoard.getViewportContainer(props.board) }
+    { target: PlaitBoard.getViewportContainer(board) }
   );
 
   useEventListener(
@@ -37,7 +37,7 @@ const useBoardEvent = (props: {
       if (event.metaKey || event.ctrlKey) {
         event.preventDefault();
         const { deltaX, deltaY } = event;
-        const zoom = props.board.viewport.zoom;
+        const zoom = board.viewport.zoom;
         const sign = Math.sign(deltaY);
         const MAX_STEP = ZOOM_STEP * 100;
         const absDelta = Math.abs(deltaY);
@@ -52,26 +52,23 @@ const useBoardEvent = (props: {
           -sign *
           // reduced amplification for small deltas (small movements on a trackpad)
           Math.min(1, absDelta / 20);
-        BoardTransforms.updateZoom(props.board, newZoom, false);
+        BoardTransforms.updateZoom(board, newZoom, false);
       }
     },
-    { target: PlaitBoard.getViewportContainer(props.board), passive: false }
+    { target: PlaitBoard.getViewportContainer(board), passive: false }
   );
 
   useEffect(() => {
-    if (!PlaitBoard.getBoardContainer(props.board)) {
-      return;
-    }
     const resizeObserver = new ResizeObserver(() => {
-      initializeViewportContainer(props.board);
-      initializeViewBox(props.board);
-      updateViewportOffset(props.board);
+      initializeViewportContainer(board);
+      initializeViewBox(board);
+      updateViewportOffset(board);
     });
-    resizeObserver.observe(PlaitBoard.getBoardContainer(props.board));
+    resizeObserver.observe(PlaitBoard.getBoardContainer(board));
     return () => {
       resizeObserver && resizeObserver.disconnect();
     };
-  }, [props.board]);
+  }, []);
 };
 
 export default useBoardEvent;

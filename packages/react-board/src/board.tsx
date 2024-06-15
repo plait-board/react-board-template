@@ -34,7 +34,7 @@ import {
   type PlaitChildrenContext
 } from '@plait/core';
 import type { BoardChangeData } from './plugins/board';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import React from 'react';
 import classNames from 'classnames';
 import useBoardPluginEvent from './hooks/use-plugin-event';
@@ -62,9 +62,10 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
   const viewportContainerRef = useRef<HTMLDivElement>(null);
   const boardContainerRef = useRef<HTMLDivElement>(null);
 
-  const [board, setBoard] = useState<PlaitBoard>(
-    initializeBoard(props.value, props.options, props.plugins)
-  );
+  const board = useMemo(() => {
+    return initializeBoard(props.value, props.options, props.plugins);
+  }, []);
+
   const [boardClassName, setBoardClassName] = useState<string>(
     getBoardClassName(board)
   );
@@ -101,7 +102,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     });
     const context = new PlaitBoardContext();
     BOARD_TO_CONTEXT.set(board, context);
-    setBoard(board);
 
     initializeViewportContainer(board);
     initializeViewBox(board);
@@ -125,8 +125,8 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
     };
   }, []);
 
-  useBoardPluginEvent({ board, hostRef });
-  useBoardEvent({ board, hostRef });
+  useBoardPluginEvent(board, hostRef);
+  useBoardEvent(board, hostRef);
 
   return (
     <div className={boardClassName} ref={boardContainerRef}>
@@ -204,6 +204,7 @@ const getBoardClassName = (board: PlaitBoard) => {
   return classNames(
     HOST_CLASS_NAME,
     `${getBrowserClassName()}`,
+    `pointer-${board.pointer}`,
     `theme-${board.theme?.themeColorMode}`,
     {
       focused: PlaitBoard.isFocus(board),
