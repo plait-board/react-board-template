@@ -62,14 +62,15 @@
     "@plait/mind": "0.62.0-next.0",
     "@plait/text-plugins": "0.62.0-next.0",
     "ahooks": "^3.8.0",
+    "classnames": "^2.5.1",
     "immer": "^10.0.3",
     "is-hotkey": "^0.2.0",
     "p-all": "^5.0.0",
     "roughjs": "^4.5.2",
     "rxjs": "~7.8.0",
     "slate": "^0.101.5",
-    "slate-react": "^0.104.0",
     "slate-history": "^0.100.0",
+    "slate-react": "^0.104.0",
     "source-map-support": "^0.5.21"
   },
   "engines": {

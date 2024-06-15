@@ -55,6 +55,7 @@ import {
 import type { BoardChangeData } from './plugins/board';
 import { useRef, useEffect, useState } from 'react';
 import React from 'react';
+import classNames from 'classnames';
 import useBoardPluginEvent from './hooks/use-plugin-event';
 import useBoardEvent from './hooks/use-board-event';
 import { withReact } from './plugins/with-react';
@@ -81,9 +82,8 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
   const boardContainerRef = useRef<HTMLDivElement>(null);
 
   const [board, setBoard] = useState<PlaitBoard>({} as PlaitBoard);
-
-  const [className, setClassName] = useState<string>(
-    `plait-board plait-board-container`
+  const [boardClassName, setBoardClassName] = useState<string>(
+    getBoardClassName(board)
   );
 
   useEffect(() => {
@@ -107,6 +107,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
       listRender.update(board.children, initializeChildrenContext(board));
     });
     BOARD_TO_AFTER_CHANGE.set(board, () => {
+      setBoardClassName(getBoardClassName(board));
       const data: BoardChangeData = {
         children: board.children,
         operations: board.operations,
@@ -115,9 +116,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
         theme: board.theme
       };
       props.onChange && props.onChange(data);
-      setClassName(
-        `plait-board plait-board-container ${getBoardDynamicClassName(board)}`
-      );
     });
     const context = new PlaitBoardContext();
     BOARD_TO_CONTEXT.set(board, context);
@@ -133,9 +131,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
 
     initialized = true;
 
-    setClassName(
-      `plait-board plait-board-container ${getBoardDynamicClassName(board)}`
-    );
+    setBoardClassName(getBoardClassName(board));
 
     return () => {
       BOARD_TO_CONTEXT.delete(board);
@@ -154,7 +150,7 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
   useBoardEvent({ board, hostRef });
 
   return (
-    <div className={className} ref={boardContainerRef}>
+    <div className={boardClassName} ref={boardContainerRef}>
       <div
         className="viewport-container"
         ref={viewportContainerRef}
@@ -225,6 +221,25 @@ const initializeBoard = (value: any, options: any, plugins: any) => {
   return board;
 };
 
+const getBoardClassName = (board: PlaitBoard) => {
+  const defaultClassName = 'plait-board plait-board-container';
+  if (PlaitBoard.isBoard(board)) {
+    return classNames(
+      defaultClassName,
+      `${getBrowserClassName()}`,
+      `theme-${board.theme?.themeColorMode}`,
+      {
+        focused: PlaitBoard.isFocus(board),
+        readonly: PlaitBoard.isReadonly(board),
+        'disabled-scroll':
+          board.options?.disabledScrollOnNonFocus && !PlaitBoard.isFocus(board)
+      }
+    );
+  } else {
+    return defaultClassName;
+  }
+};
+
 const getBrowserClassName = () => {
   if (IS_SAFARI) {
     return 'safari';
@@ -236,19 +251,4 @@ const getBrowserClassName = () => {
     return 'firefox';
   }
   return '';
-};
-
-const getBoardDynamicClassName = (board: PlaitBoard) => {
-  let result = `${getBrowserClassName()}`;
-  if (PlaitBoard.isFocus(board)) {
-    result += ` focused`;
-  }
-  if (board.options?.readonly) {
-    result += ` readonly`;
-  }
-  if (board.options?.disabledScrollOnNonFocus && !PlaitBoard.isFocus(board)) {
-    result += ` disabled-scroll`;
-  }
-  result += ` theme-${board.theme?.themeColorMode}`;
-  return result;
 };
