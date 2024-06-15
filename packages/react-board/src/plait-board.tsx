@@ -81,13 +81,14 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
   const viewportContainerRef = useRef<HTMLDivElement>(null);
   const boardContainerRef = useRef<HTMLDivElement>(null);
 
-  const [board, setBoard] = useState<PlaitBoard>({} as PlaitBoard);
+  const [board, setBoard] = useState<PlaitBoard>(
+    initializeBoard(props.value, props.options, props.plugins)
+  );
   const [boardClassName, setBoardClassName] = useState<string>(
     getBoardClassName(board)
   );
 
   useEffect(() => {
-    let board = initializeBoard(props.value, props.options, props.plugins);
     const roughSVG = rough.svg(hostRef.current!, {
       options: { roughness: 0, strokeWidth: 1 }
     });
@@ -131,8 +132,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
 
     initialized = true;
 
-    setBoardClassName(getBoardClassName(board));
-
     return () => {
       BOARD_TO_CONTEXT.delete(board);
       BOARD_TO_AFTER_CHANGE.delete(board);
@@ -146,7 +145,6 @@ export const Board: React.FC<BoardProps> = (props: BoardProps) => {
   }, []);
 
   useBoardPluginEvent({ board, hostRef });
-
   useBoardEvent({ board, hostRef });
 
   return (
@@ -223,21 +221,17 @@ const initializeBoard = (value: any, options: any, plugins: any) => {
 
 const getBoardClassName = (board: PlaitBoard) => {
   const defaultClassName = 'plait-board plait-board-container';
-  if (PlaitBoard.isBoard(board)) {
-    return classNames(
-      defaultClassName,
-      `${getBrowserClassName()}`,
-      `theme-${board.theme?.themeColorMode}`,
-      {
-        focused: PlaitBoard.isFocus(board),
-        readonly: PlaitBoard.isReadonly(board),
-        'disabled-scroll':
-          board.options?.disabledScrollOnNonFocus && !PlaitBoard.isFocus(board)
-      }
-    );
-  } else {
-    return defaultClassName;
-  }
+  return classNames(
+    defaultClassName,
+    `${getBrowserClassName()}`,
+    `theme-${board.theme?.themeColorMode}`,
+    {
+      focused: PlaitBoard.isFocus(board),
+      readonly: PlaitBoard.isReadonly(board),
+      'disabled-scroll':
+        board.options?.disabledScrollOnNonFocus && !PlaitBoard.isFocus(board)
+    }
+  );
 };
 
 const getBrowserClassName = () => {
