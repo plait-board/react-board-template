@@ -5,6 +5,7 @@ import {
   initializeViewBox,
   initializeViewportContainer,
   isFromViewportChange,
+  isPreventTouchMove,
   setIsFromViewportChange,
   updateViewportByScrolling,
   updateViewportOffset
@@ -27,6 +28,16 @@ const useBoardEvent = (
       }
     },
     { target: PlaitBoard.getViewportContainer(board) }
+  );
+
+  useEventListener(
+    'touchmove',
+    (event) => {
+      if (isPreventTouchMove(board)) {
+        event.preventDefault();
+      }
+    },
+    { target: PlaitBoard.getViewportContainer(board), passive: false }
   );
 
   useEventListener(
