@@ -7,7 +7,7 @@ import {
   type WithMindOptions
 } from '@plait/mind';
 import { createRoot } from 'react-dom/client';
-import { Emoji } from '../components/emoji';
+import { Emoji } from './components/emoji';
 import type { RenderComponentRef } from '@plait/common';
 
 export const withMindExtend = (board: PlaitBoard) => {

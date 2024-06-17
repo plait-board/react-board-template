@@ -5,7 +5,7 @@ import type {
 } from '@plait/common';
 import { PlaitBoard } from '@plait/core';
 import { createRoot } from 'react-dom/client';
-import { Image } from '../components/image';
+import { Image } from './components/image';
 
 export const withCommonPlugin = (board: PlaitBoard) => {
   const newBoard = board as PlaitBoard & PlaitImageBoard;
